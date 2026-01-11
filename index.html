@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Message For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, #05010a, #1a001e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: white;
+}
+
+/* Floating Hearts Background */
+.heart-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heart-particle {
+  position: absolute;
+  color: rgba(255, 77, 109, 0.4);
+  animation: float 6s linear infinite;
+  z-index: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.page {
+  display: none;
+  animation: fade 0.8s ease forwards;
+}
+
+.page.active { display: block; }
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #ff4d6d, #8a002e);
+  border-radius: 50%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255, 77, 109, 0.5);
+}
+
+.avatar span { font-size: 50px; }
+
+h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  color: #ff8fab;
+  margin: 15px 0 10px;
+}
+
+.promise-title {
+  color: #ffd700; /* Gold color for promises */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+p { color: #ddd; font-size: 15px; line-height: 1.5; }
+
+.btn {
+  margin-top: 20px;
+  padding: 15px;
+  width: 100%;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #ff4d6d, #ff8fab);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 12px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.card.revealed {
+  background: rgba(255, 77, 109, 0.15);
+  border-color: #ff4d6d;
+  color: #fff;
+  transform: scale(1.03);
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart-bg" id="heartBg"></div>
+
+<div class="container">
+  <div class="page active">
+    <div class="avatar"><span>✨</span></div>
+    <h1>Hey Beautiful</h1>
+    <p>I have a small secret to tell you...<br>Are you ready?</p>
+    <button class="btn" onclick="nextPage()">Open My Heart 🤍</button>
+  </div>
+
+  <div class="page">
+    <div class="avatar"><span>💗</span></div>
+    <h1>Just for you</h1>
+    <p>Tap each heart to reveal</p>
+    <div class="card" onclick="reveal(this,'You are my favourite person ❤️')">🤍</div>
+    <div class="card" onclick="reveal(this,'You make my world so much brighter 💞')">🤍</div>
+    <div class="card" onclick="reveal(this,'I can’t stop thinking about you 🥹')">🤍</div>
+    <div class="card" onclick="reveal(this,'I will always choose you 🫶')">🤍</div>
+    <button class="btn" id="btn2" style="display:none;" onclick="nextPage()">Something else... →</button>
+  </div>
+
+  <div class="page">
+    <div class="avatar" style="background: radial-gradient(circle, #ffd700, #b8860b);"><span>🤝</span></div>
+    <h1 class="promise-title">My Promise to You❤️</h1>
+    <p>Tap to see my commitments to us</p>
+    <div class="card" onclick="reveal(this,'I promise that I will be loyal to you for the rest of my life 💕')">✨</div>
+    <div class="card" onclick="reveal(this,'I\'ll never leave you in your bad times 💕')">✨</div>
+    <div class="card" onclick="reveal(this,'I\'ll never break your trust 💕')">✨</div>
+    <div class="card" onclick="reveal(this,'I\'ll never doubt you 💕')">✨</div>
+    <button class="btn" id="btn3" style="display:none;" onclick="nextPage()">Last thing... 🥺</button>
+  </div>
+
+  <div class="page">
+    <h1 style="font-size: 4rem; margin-bottom: 0;">🌹</h1>
+    <h1>I Love You!</h1>
+    <p>Thanks for being the best part of my life.<br>You're stuck with me forever! 😍</p>
+    <button class="btn" onclick="megaBurst()">Click for a big surprise 🎁</button>
+  </div>
+</div>
+
+<script>
+let current = 0;
+const pages = document.querySelectorAll('.page');
+let revealedPage2 = 0;
+let revealedPage3 = 0;
+
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart-particle');
+  heart.innerHTML = '❤️';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+  heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+  document.getElementById('heartBg').appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+setInterval(createHeart, 400);
+
+function nextPage() {
+  pages[current].classList.remove('active');
+  current++;
+  if (current < pages.length) {
+    pages[current].classList.add('active');
+  }
+}
+
+function reveal(card, text) {
+  if (!card.classList.contains('revealed')) {
+    card.innerHTML = text;
+    card.classList.add('revealed');
+    
+    // Logic for Page 2
+    if (current === 1) {
+      revealedPage2++;
+      if (revealedPage2 === 4) document.getElementById('btn2').style.display = 'block';
+    }
+    // Logic for Page 3 (Promises)
+    if (current === 2) {
+      revealedPage3++;
+      if (revealedPage3 === 4) document.getElementById('btn3').style.display = 'block';
+    }
+  }
+}
+
+// Mega heart burst for the final page
+function megaBurst() {
+  for(let i=0; i<100; i++) {
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.classList.add('heart-particle');
+      heart.innerHTML = ['❤️','💖','💕','💗','🌸'][Math.floor(Math.random()*5)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (Math.random() * 30 + 10) + 'px';
+      heart.style.animationDuration = (Math.random() * 1 + 1.5) + 's'; 
+      heart.style.filter = 'blur(' + (Math.random() * 2) + 'px)';
+      document.getElementById('heartBg').appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }, i * 30);
+  }
+}
+</script>
+
+</body>
+</html>
